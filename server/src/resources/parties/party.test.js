@@ -5,6 +5,7 @@ const { start } = require('../../server');
 const party = {
   username: 'joe',
   progress: 100,
+  seconds: 10,
 };
 describe('## PARTIES ##', () => {
   let server;
@@ -21,6 +22,34 @@ describe('## PARTIES ##', () => {
         Party.create(party),
         Party.create(party),
       ]);
+      const res = await server.inject({
+        method: 'GET',
+        url: '/parties',
+      });
+      should(res.statusCode).be.equal(200);
+      should(res.result).match(createdParties.map((p) => p.toJSON()));
+    });
+    it('Should get the user list limited at 20 items', async () => {
+      const createdParties = await Promise.all(
+        Array.from(new Array(22)).map(() => Party.create(party)),
+      );
+      const res = await server.inject({
+        method: 'GET',
+        url: '/parties',
+      });
+      should(res.statusCode).be.equal(200);
+      should(res.result.length).be.equal(20);
+    });
+    it('Should get the user list order by seconds asc', async () => {
+      let createdParties = await Promise.all(
+        Array.from(new Array(20)).map((_, i) =>
+          Party.create({ ...party, seconds: i }),
+        ),
+      );
+      // ascendant sorting by seconds
+      createdParties = createdParties.sort((a, b) =>
+        a.seconds > b.seconds ? 1 : -1,
+      );
       const res = await server.inject({
         method: 'GET',
         url: '/parties',
@@ -58,10 +87,12 @@ describe('## PARTIES ##', () => {
         url: `/parties/${createdParty.id}`,
         payload: {
           progress: 85,
+          seconds: 75,
         },
       });
       should(res.statusCode).be.equal(200);
-      should(res.result).match(createdParty.toJSON());
+      should(res.result.progress).be.equal(85);
+      should(res.result.seconds).be.equal(75);
     });
     it('Should return 404 as the party dos not exist', async () => {
       const res = await server.inject({
@@ -80,6 +111,17 @@ describe('## PARTIES ##', () => {
         url: `/parties/${createdParty.id}`,
         payload: {
           progress: 185,
+        },
+      });
+      should(res.statusCode).be.equal(400);
+    });
+    it('Should return 400 as seconds is out of range', async () => {
+      const createdParty = Party.create(party);
+      const res = await server.inject({
+        method: 'PUT',
+        url: `/parties/${createdParty.id}`,
+        payload: {
+          seconds: -15,
         },
       });
       should(res.statusCode).be.equal(400);

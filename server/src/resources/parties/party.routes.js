@@ -38,6 +38,9 @@ module.exports = [
           progress: Joi.number()
             .min(0)
             .max(100),
+          seconds: Joi.number()
+            .integer()
+            .min(0),
         }),
       },
     },

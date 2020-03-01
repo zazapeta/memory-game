@@ -24,6 +24,14 @@ const Party = sequelize.define(
         max: 100,
       },
     },
+    seconds: {
+      type: Sequelize.NUMBER,
+      defaultValue: 0,
+      validate: {
+        isInt: true,
+        min: 0,
+      },
+    },
   },
   {
     timestamp: true,

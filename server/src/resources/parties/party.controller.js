@@ -1,9 +1,13 @@
 const Boom = require('@hapi/boom');
+const { sequelize } = require('../../../db/connect');
 const Party = require('./party.model');
 
 class PartyController {
   static async list(req) {
-    const parties = await Party.findAll();
+    const parties = await Party.findAll({
+      limit: 20,
+      order: sequelize.literal('seconds ASC'),
+    });
     return parties.map((p) => p.toJSON());
   }
   static async create(req, h) {
@@ -16,8 +20,8 @@ class PartyController {
     if (!party) {
       return Boom.notFound();
     }
-    const updatedParty = await party.save(req.payload);
-    return updatedParty.toJSON();
+    await party.update(req.payload);
+    return party.toJSON();
   }
 }
 

@@ -41,7 +41,7 @@ let serverRegistredPlugins = false;
 exports.start = async () => {
   const server = hapi.server({
     port: process.env.PORT || 3001,
-    host: process.env.HOST || 'localhost',
+    host: process.env.HOST || '0.0.0.0',
     routes: {
       cors: true,
       files: {

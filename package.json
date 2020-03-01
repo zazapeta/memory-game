@@ -2,7 +2,9 @@
   "name": "memory-game-server",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd ./client && npm i && npm run build"
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd ./client && npm i && npm run build && cd ..",
+    "build:server": "cd ./server && npm i cd .."
   },
   "author": "",
   "license": "ISC",

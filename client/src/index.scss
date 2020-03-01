@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: lightgrey;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -12,11 +13,28 @@ code {
     monospace;
 }
 
+/*
+ CARDS
+*/
+$cards: 'pomme', 'banane', 'pommeVert', 'fraise', 'abricot', 'grenade', 'citron',
+  'citronVert', 'peche', 'raisin', 'pasteque', 'prune', 'poire', 'cerise',
+  'framboise', 'mangue', 'mirabelle';
+$cardSize: 100px;
+$nbCardByRow: 5;
+$nbRow: 4;
+@each $card in $cards {
+  .card-#{$card} {
+    width: $cardSize;
+    height: $cardSize;
+    background: url('./game/cards.png') 0 ((index($cards, $card)-1) * -100px);
+  }
+}
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-  grid-auto-rows: 1fr;
-  width: calc(8rem * 4);
+  grid-template-columns: repeat(auto-fill, minmax($cardSize, 1fr));
+  grid-template-rows: repeat($nbRow, 1fr);
+  width: ($cardSize + 5px) * $nbCardByRow;
 }
 
 .grid::before {
@@ -42,8 +60,8 @@ code {
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
-  width: 8rem;
-  height: 12rem;
+  width: $cardSize;
+  height: $cardSize;
   border: 1px solid #f1f1f1;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
@@ -84,4 +102,35 @@ code {
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
+}
+
+.game-container {
+  max-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.1fr 2.8fr 0.1fr 1.1fr;
+  grid-template-rows: 3fr 0.5fr 1fr;
+  grid-template-areas: '. game . leaderboard' '. game . timer' '. . . .';
+}
+
+.leaderboard {
+  grid-area: leaderboard;
+  overflow: auto;
+}
+
+.game {
+  grid-area: game;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer {
+  grid-area: timer;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.time {
+  font-size: 8rem;
 }

@@ -1,5 +1,5 @@
 import { Machine, actions, sendParent } from 'xstate';
-const { assign, send } = actions;
+const { assign } = actions;
 
 const isMax = (context) => context.seconds >= context.maximum;
 
@@ -21,10 +21,7 @@ const timeMachine = Machine({
       invoke: {
         id: 'tick',
         src: (context, event) => (callback, onReceive) => {
-          const id = setInterval(() => {
-            console.log('ticking');
-            callback('TICK');
-          }, 1000);
+          const id = setInterval(() => callback('TICK'), 1000);
           // Perform cleanup
           return () => clearInterval(id);
         },
@@ -36,14 +33,16 @@ const timeMachine = Machine({
             target: '',
             actions: [
               assign({ seconds: (context) => context.seconds + 1 }),
-              sendParent('TICK'),
+              sendParent('CLOCK_TICK'),
             ],
           },
         ],
+        STOP: 'end',
       },
     },
     end: {
       type: 'final',
+      entry: sendParent('CLOCK_END'),
     },
   },
 });

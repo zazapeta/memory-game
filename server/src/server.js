@@ -39,8 +39,9 @@ const registerPlugins = async (server) => {
 let serverRegistredPlugins = false;
 exports.start = async () => {
   const server = hapi.server({
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 3001,
     host: 'localhost',
+    routes: { cors: true },
   });
   server.route(require('./resources/utils/utils.routes'));
   server.route(require('./resources/parties/party.routes'));

@@ -24,12 +24,11 @@ function shuffle(array) {
 // TODO: handle status code >= 400 as an error
 
 // GET /parties
-const fetchParties = (ctx) =>
-  fetch('http://localhost:3001/parties').then((res) => res.json());
+const fetchParties = (ctx) => fetch('/parties').then((res) => res.json());
 
 // POST /parties
 const updateParty = (ctx) => {
-  return fetch('http://localhost:3001/parties', {
+  return fetch('/parties', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

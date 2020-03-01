@@ -3,6 +3,7 @@ const hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert'); // file response handler
 const Vision = require('@hapi/vision'); // template string
 const HapiSwagger = require('hapi-swagger');
+const Path = require('path');
 
 const package = require('../package.json');
 const { sequelize, associate } = require('../db/connect');
@@ -40,8 +41,13 @@ let serverRegistredPlugins = false;
 exports.start = async () => {
   const server = hapi.server({
     port: process.env.PORT || 3001,
-    host: 'localhost',
-    routes: { cors: true },
+    host: process.env.HOST || 'localhost',
+    routes: {
+      cors: true,
+      files: {
+        relativeTo: Path.join(__dirname, '../../client/build'),
+      },
+    },
   });
   server.route(require('./resources/utils/utils.routes'));
   server.route(require('./resources/parties/party.routes'));
@@ -55,6 +61,16 @@ exports.start = async () => {
   } else {
     await sequelize.sync();
     await registerPlugins(server);
+    server.route({
+      method: 'GET',
+      path: '/{param*}',
+      handler: {
+        directory: {
+          path: '.',
+          redirectToSlash: true,
+        },
+      },
+    });
     await server.start();
     console.log(
       `[API v${package.version}] Server running at: ${server.info.uri}`,

@@ -96,13 +96,13 @@ const memoryGameMachine = Machine({
   states: {
     idle: {
       entry: assign({
-        cards: getCards(),
-        revealedCards: {},
-        clock: null,
-        progress: 0,
-        username: '',
-        error: '',
-        lastRevealedCardId: null,
+        cards: (ctx) => getCards(),
+        revealedCards: () => ({}),
+        clock: () => null,
+        progress: () => 0,
+        username: () => '',
+        error: () => '',
+        lastRevealedCardId: () => null,
       }),
       invoke: {
         id: 'fetch-parties',

@@ -9,11 +9,15 @@
       "request": "launch",
       "name": "Mocha Tests",
       "program": "${workspaceFolder}/server/node_modules/mocha/bin/_mocha",
+      "env": {
+        "NODE_ENV": "test"
+      },
       "args": [
         "--timeout",
-        "999999",
+        "99999",
         "--colors",
-        "${workspaceFolder}/server/test"
+        "--recursive",
+        "${workspaceFolder}/server/src/**/*.test.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**"]

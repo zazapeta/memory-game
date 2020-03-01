@@ -1,5 +1,5 @@
 {
-  "name": "memory-game-server",
+  "name": "mgs",
   "version": "1.0.0",
   "description": "Memory game server",
   "main": "index.js",

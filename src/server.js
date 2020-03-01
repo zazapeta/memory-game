@@ -43,10 +43,7 @@ exports.start = async () => {
     port: process.env.PORT || 3001,
     host: process.env.HOST || '0.0.0.0',
     routes: {
-      cors: true,
-      files: {
-        relativeTo: Path.join(__dirname, '../../client/build'),
-      },
+      cors: true, // WARN: security
     },
   });
   server.route(require('./resources/utils/utils.routes'));
@@ -61,16 +58,6 @@ exports.start = async () => {
   } else {
     await sequelize.sync();
     await registerPlugins(server);
-    server.route({
-      method: 'GET',
-      path: '/{param*}',
-      handler: {
-        directory: {
-          path: '.',
-          redirectToSlash: true,
-        },
-      },
-    });
     await server.start();
     console.log(
       `[API v${package.version}] Server running at: ${server.info.uri}`,

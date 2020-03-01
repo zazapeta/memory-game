@@ -24,11 +24,12 @@ function shuffle(array) {
 // TODO: handle status code >= 400 as an error
 
 // GET /parties
-const fetchParties = (ctx) => fetch('/parties').then((res) => res.json());
+const fetchParties = (ctx) =>
+  fetch('https://clock-mg-api.herokuapp.com/parties').then((res) => res.json());
 
 // POST /parties
 const updateParty = (ctx) => {
-  return fetch('/parties', {
+  return fetch('https://clock-mg-api.herokuapp.com/parties', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

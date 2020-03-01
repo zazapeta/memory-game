@@ -22,28 +22,12 @@ module.exports = [
           username: Joi.string()
             .min(1)
             .max(20),
-        }),
-      },
-    },
-    handler: create,
-  },
-  {
-    method: 'PUT',
-    path: '/parties/{id}',
-    options: {
-      description: 'update a party',
-      tags: ['api', 'parties'],
-      validate: {
-        payload: Joi.object({
-          progress: Joi.number()
-            .min(0)
-            .max(100),
           seconds: Joi.number()
             .integer()
             .min(0),
         }),
       },
     },
-    handler: update,
+    handler: create,
   },
 ];

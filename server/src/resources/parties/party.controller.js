@@ -14,15 +14,6 @@ class PartyController {
     const createdParty = await Party.create(req.payload);
     return h.response(createdParty.toJSON()).created('/parties');
   }
-
-  static async update(req, h) {
-    const party = await Party.findByPk(req.params.id);
-    if (!party) {
-      return Boom.notFound();
-    }
-    await party.update(req.payload);
-    return party.toJSON();
-  }
 }
 
 module.exports = PartyController;

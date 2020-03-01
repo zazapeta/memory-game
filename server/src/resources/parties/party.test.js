@@ -4,7 +4,6 @@ const { start } = require('../../server');
 
 const party = {
   username: 'joe',
-  progress: 100,
   seconds: 10,
 };
 describe('## PARTIES ##', () => {
@@ -75,54 +74,6 @@ describe('## PARTIES ##', () => {
       const res = await server.inject({
         method: 'POST',
         url: '/parties',
-      });
-      should(res.statusCode).be.equal(400);
-    });
-  });
-  describe('PUT /parties', () => {
-    it('Should return 200 and update a party', async () => {
-      const createdParty = await Party.create(party);
-      const res = await server.inject({
-        method: 'PUT',
-        url: `/parties/${createdParty.id}`,
-        payload: {
-          progress: 85,
-          seconds: 75,
-        },
-      });
-      should(res.statusCode).be.equal(200);
-      should(res.result.progress).be.equal(85);
-      should(res.result.seconds).be.equal(75);
-    });
-    it('Should return 404 as the party dos not exist', async () => {
-      const res = await server.inject({
-        method: 'PUT',
-        url: `/parties/456dq4f56`,
-        payload: {
-          progress: 85,
-        },
-      });
-      should(res.statusCode).be.equal(404);
-    });
-    it('Should return 400 as progress is out of range', async () => {
-      const createdParty = Party.create(party);
-      const res = await server.inject({
-        method: 'PUT',
-        url: `/parties/${createdParty.id}`,
-        payload: {
-          progress: 185,
-        },
-      });
-      should(res.statusCode).be.equal(400);
-    });
-    it('Should return 400 as seconds is out of range', async () => {
-      const createdParty = Party.create(party);
-      const res = await server.inject({
-        method: 'PUT',
-        url: `/parties/${createdParty.id}`,
-        payload: {
-          seconds: -15,
-        },
       });
       should(res.statusCode).be.equal(400);
     });

@@ -16,14 +16,6 @@ const Party = sequelize.define(
       },
       allowNull: false,
     },
-    progress: {
-      type: Sequelize.NUMBER,
-      defaultValue: 0,
-      validate: {
-        min: 0,
-        max: 100,
-      },
-    },
     seconds: {
       type: Sequelize.NUMBER,
       defaultValue: 0,

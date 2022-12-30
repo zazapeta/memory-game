@@ -15,7 +15,7 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "mocha": "^7.0.1"
+    "mocha": "^10.2.0"
   },
   "scripts": {
     "start": "nodemon ./src/index.js",
